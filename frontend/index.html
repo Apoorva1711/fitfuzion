@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitFuzion - Transform Body & Mind</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">Fit<span>Fuzion</span></div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#workouts">Workouts</a></li>
+      <li><a href="#bmi">BMI Check</a></li>
+      <li><a href="#pricing">Plans</a></li>
+    </ul>
+    <button class="join-btn" onclick="openModal()">Join Now</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Transform Your <span>Body & Mind</span></h1>
+      <p>Science-backed workouts, high-energy classes, and personal guidance.</p>
+      <div class="hero-actions">
+        <a href="#bmi" class="btn secondary-btn">Check BMI</a>
+        <button class="btn primary-btn" onclick="openModal()">Get Started</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workouts Section -->
+  <section id="workouts" class="section">
+    <h2>Popular Workouts</h2>
+    <div class="card-grid">
+      <div class="workout-card">
+        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&q=80" alt="HIIT Burn" />
+        <div class="card-body">
+          <h3>⚡ HIIT Burn</h3>
+          <p>Fast calorie burn and metabolic endurance.</p>
+        </div>
+      </div>
+      <div class="workout-card">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&q=80" alt="Strength" />
+        <div class="card-body">
+          <h3>🏋️ Strength</h3>
+          <p>Build real power with weight lifting.</p>
+        </div>
+      </div>
+      <div class="workout-card">
+        <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500&q=80" alt="Yoga & Flex" />
+        <div class="card-body">
+          <h3>🧘 Yoga & Flex</h3>
+          <p>Active recovery, posture and flexibility.</p>
+        </div>
+      </div>
+      <div class="workout-card">
+        <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=500&q=80" alt="Boxing" />
+        <div class="card-body">
+          <h3>🥊 Boxing</h3>
+          <p>High-energy cardio conditioning workouts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BMI Calculator -->
+  <section id="bmi" class="section">
+    <h2>Quick BMI Check</h2>
+    <div class="bmi-container">
+      <div class="input-group">
+        <label>Height (cm):</label>
+        <input type="number" id="height" placeholder="e.g. 175" />
+      </div>
+      <div class="input-group">
+        <label>Weight (kg):</label>
+        <input type="number" id="weight" placeholder="e.g. 70" />
+      </div>
+      <button class="btn primary-btn full-width" onclick="calculateBMI()">Calculate</button>
+      <div id="bmi-result" class="bmi-output"></div>
+    </div>
+  </section>
+
+  <!-- Pricing Plans -->
+  <section id="pricing" class="section">
+    <h2>Membership Plans</h2>
+    <div class="card-grid">
+      <div class="plan-card">
+        <h3>Monthly Flex</h3>
+        <div class="price">₹1,999<span>/mo</span></div>
+        <p>✔ All Gym Access<br>✔ Locker & Shower<br>✖ Personal Coach</p>
+        <button class="btn secondary-btn" onclick="selectPlan('Monthly Flex')">Choose Plan</button>
+      </div>
+
+      <div class="plan-card featured">
+        <span class="badge">POPULAR</span>
+        <h3>Pro 6-Month</h3>
+        <div class="price">₹1,499<span>/mo</span></div>
+        <p>✔ Unlimited Classes<br>✔ Sauna & Showers<br>✔ Diet Blueprint</p>
+        <button class="btn primary-btn" onclick="selectPlan('Pro 6-Month')">Choose Plan</button>
+      </div>
+
+      <div class="plan-card">
+        <h3>Elite Annual</h3>
+        <div class="price">₹1,099<span>/mo</span></div>
+        <p>✔ Global Pass<br>✔ Personal Trainer<br>✔ Biometric Scans</p>
+        <button class="btn secondary-btn" onclick="selectPlan('Elite Annual')">Choose Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join Modal -->
+  <div id="joinModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h3>Join FitFuzion</h3>
+      <form id="membershipForm">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="mName" required placeholder="Enter full name" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="mEmail" required placeholder="name@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="mPhone" required placeholder="9876543210" />
+        </div>
+        <div class="form-group">
+          <label>Selected Plan</label>
+          <select id="mPlan">
+            <option value="Monthly Flex">Monthly Flex (₹1,999)</option>
+            <option value="Pro 6-Month">Pro 6-Month (₹1,499)</option>
+            <option value="Elite Annual">Elite Annual (₹1,099)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn primary-btn full-width">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 FitFuzion. Full-Stack Web Application.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
