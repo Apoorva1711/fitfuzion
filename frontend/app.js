@@ -1,17 +1,20 @@
-// Render lo deploy chesaka vacchina backend URL ikkada update cheyochu (Default ga localhost)
-const API_BASE_URL = 'https://fitfuzion-backend.onrender.com'; 
+// Render backend URL (trailing slash lekunda)
+const API_BASE_URL = 'https://fitfuzion-backend.onrender.com';
 
 // Modal Open / Close
 function openModal() {
-  document.getElementById('joinModal').style.display = 'flex';
+  const modal = document.getElementById('joinModal');
+  if (modal) modal.style.display = 'flex';
 }
 
 function closeModal() {
-  document.getElementById('joinModal').style.display = 'none';
+  const modal = document.getElementById('joinModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function selectPlan(planName) {
-  document.getElementById('mPlan').value = planName;
+  const planInput = document.getElementById('mPlan');
+  if (planInput) planInput.value = planName;
   openModal();
 }
 
@@ -24,9 +27,11 @@ window.onclick = function(event) {
 
 // BMI Calculation
 function calculateBMI() {
-  const heightVal = parseFloat(document.getElementById('height').value);
-  const weightVal = parseFloat(document.getElementById('weight').value);
+  const heightVal = parseFloat(document.getElementById('height')?.value);
+  const weightVal = parseFloat(document.getElementById('weight')?.value);
   const resultDiv = document.getElementById('bmi-result');
+
+  if (!resultDiv) return;
 
   if (!heightVal || !weightVal || heightVal <= 0 || weightVal <= 0) {
     resultDiv.style.color = '#e06d53';
@@ -48,31 +53,56 @@ function calculateBMI() {
 }
 
 // Backend API call for Membership Form
-document.getElementById('membershipForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const membershipForm = document.getElementById('membershipForm');
+if (membershipForm) {
+  membershipForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const fullName = document.getElementById('mName').value;
-  const email = document.getElementById('mEmail').value;
-  const phone = document.getElementById('mPhone').value;
-  const plan = document.getElementById('mPlan').value;
+    const submitBtn = membershipForm.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.innerText : 'Submit';
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/members/join`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullName, email, phone, plan })
-    });
+    const fullName = document.getElementById('mName')?.value?.trim();
+    const email = document.getElementById('mEmail')?.value?.trim();
+    const phone = document.getElementById('mPhone')?.value?.trim();
+    const plan = document.getElementById('mPlan')?.value;
 
-    const data = await res.json();
-    if (res.ok) {
-      alert('🎉 Membership application submitted successfully!');
-      document.getElementById('membershipForm').reset();
-      closeModal();
-    } else {
-      alert(data.message || 'Submission failed.');
+    if (!fullName || !email || !phone || !plan) {
+      alert('Please fill in all fields.');
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert('Server not connected. Check backend server status.');
-  }
-});
+
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Submitting...';
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/members/join`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ fullName, email, phone, plan })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        alert('🎉 Membership application submitted successfully!');
+        membershipForm.reset();
+        closeModal();
+      } else {
+        alert(data.message || `Submission failed with status: ${res.status}`);
+      }
+    } catch (err) {
+      console.error('Fetch error details:', err);
+      alert('Server response delay or network error. Please try again in a few seconds!');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+      }
+    }
+  });
+}
